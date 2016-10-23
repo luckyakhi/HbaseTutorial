@@ -1,0 +1,38 @@
+hbase-site.xml
+hbase.rootdir
+zookeeper
+
+hbase shell
+create 'employees','basicinfo','personal','salary'
+alter 'employees',{NAME=>'basicinfo',VERSIONS=>3}
+put 'employees','1','basicinfo:name','sachin'
+put 'employees','1','basicinfo:gender','male'
+put 'employees','1','personal:age','40'
+put 'employees','2','basicinfo:name','pt usha'
+put 'employees','2','basicinfo:gender','female'
+
+get 'employees',1
+
+put 'employees','1','basicinfo:name','sachin tendulkar'
+
+get 'employees',1,{COLUMN=>'basicinfo:name', VERSIONS=>3}
+
+scan 'employees',{COLUMNS=>['basicinfo:name','basicinfo:gender'], STARTROW=>'2'}
+
+scan 'employees',{ COLUMNS => ['basicinfo:name','basicinfo:gender'], LIMIT => 10, FILTER => "ValueFilter( =, 'binaryprefix:male' )" }
+
+ 
+scan 'employees', {LIMIT => 10, FILTER => SingleColumnValueFilter.new(Bytes.toBytes('basicinfo'), Bytes.toBytes('gender'), CompareFilter::CompareOp.valueOf('EQUAL'), Bytes.toBytes('male')) }
+
+lab java
+. ./makeCPATH.sh /app/usr/2.5.0.0-1245/hbase/lib
+
+hadoop classpath
+javac -cp $CPATH:/usr/hdp/2.5.0.0-1245/hadoop/conf:/usr/hdp/2.5.0.0-1245/hadoop/lib/*:/usr/hdp/2.5.0.0-1245/hadoop/.//*:/usr/hdp/2.5.0.0-1245/hadoop-hdfs/./:/usr/hdp/2.5.0.0-1245/hadoop-hdfs/lib/*:/usr/hdp/2.5.0.0-1245/hadoop-hdfs/.//*:/usr/hdp/2.5.0.0-1245/hadoop-yarn/lib/*:/usr/hdp/2.5.0.0-1245/hadoop-yarn/.//*:/usr/hdp/2.5.0.0-1245/hadoop-mapreduce/lib/*:/usr/hdp/2.5.0.0-1245/hadoop-mapreduce/.//*::mysql-connector-java-5.1.17.jar:mysql-connector-java.jar:ojdbc6.jar:/usr/hdp/2.5.0.0-1245/tez/*:/usr/hdp/2.5.0.0-1245/tez/lib/*:/usr/hdp/2.5.0.0-1245/tez/conf *.java
+
+
+java -cp $CPATH:/usr/hdp/2.5.0.0-1245/hadoop/conf:/usr/hdp/2.5.0.0-1245/hadoop/lib/*:/usr/hdp/2.5.0.0-1245/hadoop/.//*:/usr/hdp/2.5.0.0-1245/hadoop-hdfs/./:/usr/hdp/2.5.0.0-1245/hadoop-hdfs/lib/*:/usr/hdp/2.5.0.0-1245/hadoop-hdfs/.//*:/usr/hdp/2.5.0.0-1245/hadoop-yarn/lib/*:/usr/hdp/2.5.0.0-1245/hadoop-yarn/.//*:/usr/hdp/2.5.0.0-1245/hadoop-mapreduce/lib/*:/usr/hdp/2.5.0.0-1245/hadoop-mapreduce/.//*::mysql-connector-java-5.1.17.jar:mysql-connector-java.jar:ojdbc6.jar:/usr/hdp/2.5.0.0-1245/tez/*:/usr/hdp/2.5.0.0-1245/tez/lib/*:/usr/hdp/2.5.0.0-1245/tez/conf:. TestHBase
+
+
+
+https://github.com/ggraham-412/HBaseJavaExample
